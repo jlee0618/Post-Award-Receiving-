@@ -61,3 +61,28 @@ When these forms are used, the designated Government official must complete the 
 *   **Receiving/Acceptance Blocks:** Formally cleared via **Block 21** (Procurement Quality Assurance/Acceptance) or **Block 22** (Receiver's Use), which captures the precise signature, title, and date of the accepting authority.
 
 > 💡 **Workflow Best Practice:** When parsing or indexing these forms within a relational document repository, matching the signature block date (e.g., SF 1449 Block 32c) against the invoice submission date is the primary metric for tracking Prompt Payment Act (PPA) interest cycles.
+
+## 🔒 System Access Controls: Segregation of Duties (SoD)
+
+To mitigate internal fraud risk, prevent collusive vulnerabilities, and strictly enforce federal internal controls, the system architecture operates on a zero-trust model of **Segregation of Duties (SoD)**. In accordance with federal financial management guidelines, the pipeline enforces strict role separation, ensuring no single user account can execute a transaction from requirement generation to final disbursement.
+
+The system maps authorization permissions across three distinct operational roles:
+
+### 1. Funds Approving Official (The Budget Authority)
+* **System Role:** Manages the initial commitment of funds and controls the organizational budget ledger.
+* **Pipeline Constraint:** Has exclusive write-access to the funding line allocations, but is programmatically blocked from executing a contract award or signing off on a physical receipt. This ensures that the person authorizing the budget cannot also pick the vendor or validate delivery.
+
+### 2. Contracting Officer / CO (The Legal Authority)
+* **System Role:** Executes the legal contract vehicle and establishes the baseline purchase order data schema.
+* **Pipeline Constraint:** Holds the exclusive signature token to obligate government funds to an external entity. However, the CO profile is explicitly restricted from approving invoices or certifying the physical arrival of goods, preventing conflict of interest in contract performance tracking.
+
+### 3. Receiving Official / COR (The Inspection Authority)
+* **System Role:** Physically or digitally inspects the deliverables and signs off on the **Receiving Report**.
+* **Pipeline Constraint:** Evaluates actual quantity and quality against the contract terms to satisfy FAR 32.905(c). This profile has zero access to manipulate the original contract pricing or modify budget thresholds, acting strictly as an independent verifier of physical fact.
+
+---
+
+### Automated Multi-Party Verification
+Before an invoice status changes to `READY_FOR_PAYMENT`, the matching engine runs an automated check confirming that **three unique digital keys** from three different authenticated users have signed off on their respective pieces of the workflow puzzle. If the same user account attempts to authorize funds and log the receipt, the pipeline immediately halts the transaction and routes an alert to systemic audit logging.
+
+
