@@ -1,4 +1,4 @@
-oh# Post-Award Contract Receiving & Compliance Engine
+# Post-Award Contract Receiving & Compliance Engine
 
 ##  Project Overview & Regulatory Context
 
