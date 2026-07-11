@@ -21,6 +21,7 @@ In alignment with recent White House directives focused on reducing improper pay
 
 ### 1. Procure-to-Pay Pipeline Flow
 ```text
+
 [Award/Contract] ➔ [Delivery] ➔ [Receipt/Inspection/Acceptance] ➔ [Receiving Report Executed] ➔ [Matching Engine (Invoice vs. RR vs. PO)] ➔ [Payment Released]'''
 
 ### 📋 FAR 32.905(c) Receiving Report Requirements
